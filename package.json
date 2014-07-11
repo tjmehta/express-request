@@ -1,6 +1,6 @@
 {
   "name": "supertest-request",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "use supertest (or superagent) like request. mikeal/request's api supertest under the hood.",
   "main": "index.js",
   "scripts": {
