@@ -1,4 +1,4 @@
-express-request
-===============
+supertest-request
+=================
 
-Make a request to express from express without http
+use supertest (or superagent) like request (request.get but use supertest under the hood)
