@@ -1,7 +1,7 @@
 {
-  "name": "supertest-request",
-  "version": "0.0.1",
-  "description": "use supertest (or superagent) like request. mikeal/request's api supertest under the hood.",
+  "name": "express-request",
+  "version": "0.0.0",
+  "description": "Make a request to express from express without http",
   "main": "index.js",
   "scripts": {
     "test": "clearr; lab -l -c test",
