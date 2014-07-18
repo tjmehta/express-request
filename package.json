@@ -1,6 +1,6 @@
 {
   "name": "express-request",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Make a request to express from express without http",
   "main": "index.js",
   "scripts": {
