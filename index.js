@@ -20,7 +20,7 @@ require('methods').forEach(function (method) {
 
   function methodFn (/* url, opts, cb */) {
     var args = Array.prototype.slice.call(arguments);
-    args = formatArgs(args);
+    args = this._formatArgs(args);
     var opts = args.opts;
     var cb   = args.cb;
 
@@ -37,11 +37,15 @@ require('methods').forEach(function (method) {
   }
 });
 
+ExpressRequest.prototype.defaults = function (defaults) {
+  this.defaultOpts = defaults;
+  return this;
+};
 
 
 
 // private utils
-function formatArgs (args) {
+ExpressRequest.prototype._formatArgs = function (args) {
   var url  = args[0];
   var opts = args[1];
   var cb   = args[2];
@@ -62,14 +66,14 @@ function formatArgs (args) {
   }
   else {}
 
-  opts = opts || {};
+  opts = extend(opts || {}, this.defaultOpts);
   opts.url = url || opts.url || opts.uri;
 
   return {
     opts: opts,
     cb: cb
   };
-}
+};
 
 var optsToReq = {
   qs: 'query',
@@ -90,8 +94,8 @@ function createReq (app, opts) {
 
   req.headers = req.headers || {};
   req.params = req.params || {};
-  req.query = req.query || {};
-  req.body = req.body || {};
+  req.query = JSON.parse(JSON.stringify(req.qs || {}));
+  req.body = JSON.parse(JSON.stringify(req.body || {}));
 
   return req;
 }
