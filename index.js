@@ -96,6 +96,8 @@ function createReq (app, opts) {
   req.params = req.params || {};
   req.query = JSON.parse(JSON.stringify(req.qs || {}));
   req.body = JSON.parse(JSON.stringify(req.body || {}));
+  req.connection = req.connection || {};
+  req.connection.remoteAddress = '127.0.0.1';
 
   return req;
 }
