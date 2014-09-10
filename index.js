@@ -2,6 +2,8 @@ var exists = require('101/exists');
 var isFunction = require('101/is-function');
 var isObject = require('101/is-object');
 var extend = require('extend');
+var Url = require('url');
+var qs = require('querystring');
 
 module.exports = ExpressRequest;
 
@@ -94,7 +96,8 @@ function createReq (app, opts) {
 
   req.headers = req.headers || {};
   req.params = req.params || {};
-  req.query = JSON.parse(JSON.stringify(req.qs || {}));
+  req.query = JSON.parse(JSON.stringify(req.query || {}));
+  req.query = qs.parse(qs.stringify(req.query || {}));
   req.body = JSON.parse(JSON.stringify(req.body || {}));
   req.connection = req.connection || {};
   req.connection.remoteAddress = '127.0.0.1';
