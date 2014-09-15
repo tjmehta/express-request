@@ -61,9 +61,11 @@ describe('express request arguments', function() {
       var request = new ExpressRequest(app);
 
       var res = { __proto__: require('express/lib/response'), app: app };
-      res.send = function () {
+      res.send = send;
+      res.json = send;
+      function send () {
         done();
-      };
+      }
       request.get('/hey', { res: res }, function () {});
     });
   });

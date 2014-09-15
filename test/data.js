@@ -20,7 +20,6 @@ describe('request data', function() {
       it('opts.qs send query', function (done) {
         var request = new ExpressRequest(app);
 
-        var res = { __proto__: require('express/lib/response'), app: app };
         var query = { foo: 1 };
         request.get('/hey', { qs: query }, function (err, res, body) {
           if (err) { return done(err); }
@@ -31,7 +30,6 @@ describe('request data', function() {
       it('opts.query send query', function (done) {
         var request = new ExpressRequest(app);
 
-        var res = { __proto__: require('express/lib/response'), app: app };
         var query = { foo: 1 };
         request.get('/hey', { query: query }, function (err, res, body) {
           if (err) { return done(err); }
@@ -51,7 +49,6 @@ describe('request data', function() {
       it('opts.json send body', function (done) {
         var request = new ExpressRequest(app);
 
-        var res = { __proto__: require('express/lib/response'), app: app };
         var body = { foo: 1 };
         request.post('/hey', { json: body }, function (err, res, body) {
           if (err) { return done(err); }
@@ -62,7 +59,6 @@ describe('request data', function() {
       it('opts.body send body', function (done) {
         var request = new ExpressRequest(app);
 
-        var res = { __proto__: require('express/lib/response'), app: app };
         var body = { foo: 1 };
         request.get('/hey', { body: body }, function (err, res, body) {
           if (err) { return done(err); }
@@ -82,7 +78,6 @@ describe('request data', function() {
       it('opts.body send body', function (done) {
         var request = new ExpressRequest(app);
 
-        var res = { __proto__: require('express/lib/response'), app: app };
         var params = { foo: 1 };
         request.get('/hey', { params: params }, function (err, res, body) {
           if (err) { return done(err); }
@@ -102,7 +97,6 @@ describe('request data', function() {
       it('opts.body send body', function (done) {
         var request = new ExpressRequest(app);
 
-        var res = { __proto__: require('express/lib/response'), app: app };
         var headers = { foo: 1 };
         request.get('/hey', { headers: headers }, function (err, res, body) {
           if (err) { return done(err); }
