@@ -25,6 +25,9 @@ require('methods').forEach(function (method) {
     args = this._formatArgs(args);
     var opts = args.opts;
     var cb   = args.cb;
+    if (!cb) {
+      throw new Error('streams aren\'t supported yet');
+    }
 
     opts.method = method.toUpperCase();
     args = [opts, cb].filter(exists);
@@ -33,8 +36,10 @@ require('methods').forEach(function (method) {
     if (!req.url) {
       throw new Error('url is required');
     }
-
-    this.app.handle(req, res); // no final 404?
+    var self = this;
+    process.nextTick(function () {
+      self.app.handle(req, res); // no final 404?
+    });
     return res;
   }
 });
