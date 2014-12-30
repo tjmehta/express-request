@@ -88,8 +88,8 @@ var optsToReq = {
   json: 'body'
 };
 function createReq (app, opts) {
-  var req = {
-    __proto__: opts.req || require('express/lib/request'),
+  var req = opts.req || {
+    __proto__: require('express/lib/request'),
     app: app
   };
 
