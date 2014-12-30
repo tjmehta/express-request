@@ -104,7 +104,8 @@ describe('request data', function() {
 
         var res = { __proto__: require('express/lib/response'), app: app };
         var headers = { foo: 1 };
-        request.get('/hey', { headers: headers }, function (err, res, body) {
+        request.defaults({ headers: headers });
+        request.get('/hey', function (err, res, body) {
           if (err) { return done(err); }
           expect(body).to.eql(body);
           done();

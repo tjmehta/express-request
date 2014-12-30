@@ -4,7 +4,6 @@ module.exports = function createAppWithMiddlewares (/* middlewares */) {
   var middlewares = Array.prototype.slice.call(arguments);
   var app = express();
   middlewares.forEach(function (mw) {
-    console.log('adding mw');
     app.use(mw);
   });
   app.get('/hey', function (req, res) {

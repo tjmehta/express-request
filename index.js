@@ -1,6 +1,7 @@
 var exists = require('101/exists');
 var isFunction = require('101/is-function');
 var isObject = require('101/is-object');
+var noop = require('101/noop');
 var extend = require('extend');
 var Url = require('url');
 var qs = require('querystring');
@@ -87,7 +88,10 @@ var optsToReq = {
   json: 'body'
 };
 function createReq (app, opts) {
-  var req = opts.req || { __proto__: require('express/lib/request'), app: app };
+  var req = {
+    __proto__: opts.req || require('express/lib/request'),
+    app: app
+  };
 
   extend(req, opts);
 
@@ -102,32 +106,47 @@ function createReq (app, opts) {
   req.headers = req.headers || {};
   req.params = req.params || {};
   req.query = JSON.parse(JSON.stringify(req.query || {}));
-  req.query = qs.parse(qs.stringify(req.query || {}));
+  req.query = qs.parse(qs.stringify(req.query));
   req.body = JSON.parse(JSON.stringify(req.body || {}));
   req.connection = req.connection || {};
   req.connection.remoteAddress = '127.0.0.1';
+  if (!opts.req) {
+    req.socket = { destroy: noop };
+  }
 
   return req;
 }
 
 function createRes (app, opts, cb) {
-  var res = opts.res || { __proto__: require('express/lib/response'), app: app };
-
-  if (cb && !opts.res) {
-    var sent = false;
-    res.json = res.send = function (statusCode, body) {
-      if (sent === true) return;
-      sent = true;
-      if (typeof statusCode === 'number') {
-        res.statusCode = statusCode;
-      }
-      else {
-        body = statusCode;
-      }
-      res.body = body;
-      cb(null, res, body);
-    };
-  }
+  var res = {
+    __proto__: opts.res || require('express/lib/response'),
+    app: app
+  };
+  // there will always be a cb, until streams are supported
+  // if (cb) {
+  var sent = false;
+  res.write = throwNotSupported('write');
+  res.code = throwNotSupported('code');
+  res.end = throwNotSupported('end');
+  res.json = res.send = function (statusCode, body) {
+    if (sent === true) return;
+    sent = true;
+    if (typeof statusCode === 'number') {
+      res.statusCode = statusCode;
+    }
+    else {
+      body = statusCode;
+    }
+    res.body = body;
+    cb(null, res, body);
+  };
+  // }
 
   return res;
+}
+
+function throwNotSupported (methodName) {
+  return function () {
+    throw new Error('express request does not support "res.'+methodName+'" yet..');
+  };
 }

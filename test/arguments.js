@@ -57,14 +57,22 @@ describe('express request arguments', function() {
       var req = { __proto__: require('express/lib/request'), app: app };
       request.get('/hey', { req: req }, done);
     });
-    it('opts.res override res', function (done) {
+    it('opts.res override res (no cb)', function (done) {
       var request = new ExpressRequest(app);
 
       var res = { __proto__: require('express/lib/response'), app: app };
-      res.send = function () {
+      try {
+        request.get('/hey', { res: res });
+      } catch (e) {
+        expect(e.message).to.match(/streams/);
         done();
-      };
-      request.get('/hey', { res: res }, function () {});
+      }
+    });
+    it('opts.res override res (w/ cb)', function (done) {
+      var request = new ExpressRequest(app);
+
+      var res = { __proto__: require('express/lib/response'), app: app };
+      request.get('/hey', { res: res }, done);
     });
   });
   describe('res.send called twice', function() {

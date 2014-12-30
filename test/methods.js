@@ -18,13 +18,13 @@ describe('methods', function() {
       );
       var request = new Request(app);
 
-        request[method]('/hey', function (err, res, body) {
-          if (err) { return done(err); }
+      request[method]('/hey', function (err, res, body) {
+        if (err) { return done(err); }
 
-          expect(res.statusCode).to.equal(200);
-          expect(res.body).to.equal(body).to.equal('hey');
-          done();
-        });
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.equal(body).to.equal('hey');
+        done();
+      });
     });
 
     it('should execute the method and run the middlewares', function (done) {
@@ -34,13 +34,13 @@ describe('methods', function() {
       );
       var request = new Request(app);
 
-        request[method]('/hey', function (err, res, body) {
-          if (err) { return done(err); }
+      request[method]('/hey', function (err, res, body) {
+        if (err) { return done(err); }
 
-          expect(res.statusCode).to.equal(200);
-          expect(res.body).to.eql(body).to.eql(resJSON);
-          done();
-        });
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.eql(body).to.eql(resJSON);
+        done();
+      });
     });
   });
 });
