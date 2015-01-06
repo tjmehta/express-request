@@ -5,6 +5,7 @@ var noop = require('101/noop');
 var extend = require('extend');
 var Url = require('url');
 var qs = require('querystring');
+var noop = require('101/noop');
 
 module.exports = ExpressRequest;
 
@@ -39,7 +40,7 @@ require('methods').forEach(function (method) {
     }
     var self = this;
     process.nextTick(function () {
-      self.app.handle(req, res); // no final 404?
+      self.app.handle(req, res, noop); // no final 404?
     });
     return res;
   }
