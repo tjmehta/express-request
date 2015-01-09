@@ -138,6 +138,7 @@ function createRes (app, opts, cb) {
     else {
       body = statusCode;
     }
+    body = JSON.parse(JSON.stringify(body));
     res.body = body;
     cb(null, res, body);
   };
