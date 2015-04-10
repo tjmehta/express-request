@@ -128,7 +128,9 @@ function createRes (app, opts, cb) {
   var sent = false;
   res.write = throwNotSupported('write');
   res.code = throwNotSupported('code');
-  res.end = throwNotSupported('end');
+  res.end = function () {
+    cb(null, res);
+  };
   res.json = res.send = function (statusCode, body) {
     if (sent === true) return;
     sent = true;
