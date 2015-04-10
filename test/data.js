@@ -1,14 +1,17 @@
 var Lab = require('lab');
+var Code = require('code');
+var lab = exports.lab = Lab.script();
 
-var describe = Lab.experiment;
-var it = Lab.test;
-var expect = Lab.expect;
-var beforeEach = Lab.beforeEach;
+var expect = Code.expect;
+var describe = lab.experiment;
+var it = lab.test;
+var beforeEach = lab.beforeEach;
 var mw = require('dat-middleware');
 var createAppWithMiddleware = require('./fixtures/createAppWithMiddlewares');
 var ExpressRequest = require('../index');
 
 describe('request data', function() {
+  var app;
   describe('data', function() {
     describe('query', function() {
       beforeEach(function (done) {
@@ -24,7 +27,7 @@ describe('request data', function() {
         var query = { foo: 1 };
         request.get('/hey', { qs: query }, function (err, res, body) {
           if (err) { return done(err); }
-          expect(body).to.eql(body);
+          expect(body).to.deep.equal(body);
           done();
         });
       });
@@ -35,7 +38,7 @@ describe('request data', function() {
         var query = { foo: 1 };
         request.get('/hey', { query: query }, function (err, res, body) {
           if (err) { return done(err); }
-          expect(body).to.eql(body);
+          expect(body).to.deep.equal(body);
           done();
         });
       });
@@ -55,7 +58,7 @@ describe('request data', function() {
         var body = { foo: 1 };
         request.post('/hey', { json: body }, function (err, res, body) {
           if (err) { return done(err); }
-          expect(body).to.eql(body);
+          expect(body).to.deep.equal(body);
           done();
         });
       });
@@ -66,7 +69,7 @@ describe('request data', function() {
         var body = { foo: 1 };
         request.get('/hey', { body: body }, function (err, res, body) {
           if (err) { return done(err); }
-          expect(body).to.eql(body);
+          expect(body).to.deep.equal(body);
           done();
         });
       });
@@ -86,7 +89,7 @@ describe('request data', function() {
         var params = { foo: 1 };
         request.get('/hey', { params: params }, function (err, res, body) {
           if (err) { return done(err); }
-          expect(body).to.eql(body);
+          expect(body).to.deep.equal(body);
           done();
         });
       });
@@ -107,7 +110,7 @@ describe('request data', function() {
         request.defaults({ headers: headers });
         request.get('/hey', function (err, res, body) {
           if (err) { return done(err); }
-          expect(body).to.eql(body);
+          expect(body).to.deep.equal(body);
           done();
         });
       });

@@ -1,9 +1,11 @@
 var Lab = require('lab');
+var Code = require('code');
+var lab = exports.lab = Lab.script();
 
-var describe = Lab.experiment;
-var it = Lab.test;
-var expect = Lab.expect;
-var beforeEach = Lab.beforeEach;
+var expect = Code.expect;
+var describe = lab.experiment;
+var it = lab.test;
+var beforeEach = lab.beforeEach;
 var mw = require('dat-middleware');
 var createAppWithMiddleware = require('./fixtures/createAppWithMiddlewares');
 var ExpressRequest = require('../index');
