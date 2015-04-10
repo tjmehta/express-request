@@ -11,7 +11,7 @@ var ExpressRequest = require('../index');
 describe('end', function() {
   beforeEach(function (done) {
     app = createAppWithMiddleware(
-      mw.res.status(200);
+      mw.res.status(200),
       mw.res.end()
     );
     done();
