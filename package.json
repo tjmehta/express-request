@@ -4,7 +4,7 @@
   "description": "Make a request to express from express without http",
   "main": "index.js",
   "scripts": {
-    "test": "clearr; lab -l -c test",
+    "test": "clear; lab -l -c test",
     "test-watch": "nodemon -w *.js -w *.json -w lib -w test -w node_modules/express/lib --exec npm test"
   },
   "repository": {
