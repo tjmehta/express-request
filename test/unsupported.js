@@ -48,23 +48,5 @@ describe('unsupported functionality', function() {
         });
       });
     });
-    describe('end', function() {
-      beforeEach(function (done) {
-        app = createAppWithMiddleware(
-          mw.res.end('hello')
-        );
-        done();
-      });
-      it('should error', function (done) {
-        var request = new ExpressRequest(app);
-        var query = { foo: 1 };
-        request.get('/hey', { req:{connection:{}} }, function (err, res, body) {
-          expect(res).to.be.ok;
-          expect(res.statusCode).to.equal(500);
-          expect(res.body).to.match(/res.end/);
-          done();
-        });
-      });
-    });
   });
 });
