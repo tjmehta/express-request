@@ -1,14 +1,17 @@
 var Lab = require('lab');
+var Code = require('code');
+var lab = exports.lab = Lab.script();
 
-var describe = Lab.experiment;
-var it = Lab.test;
-var expect = Lab.expect;
-var beforeEach = Lab.beforeEach;
+var expect = Code.expect;
+var describe = lab.experiment;
+var it = lab.test;
+var beforeEach = lab.beforeEach;
 var mw = require('dat-middleware');
 var createAppWithMiddleware = require('./fixtures/createAppWithMiddlewares');
 var ExpressRequest = require('../index');
 
 describe('end', function() {
+  var app;
   beforeEach(function (done) {
     app = createAppWithMiddleware(
       mw.res.status(200),
@@ -20,10 +23,10 @@ describe('end', function() {
     var request = new ExpressRequest(app);
     var query = { foo: 1 };
     request.get('/hey', { req:{connection:{}} }, function (err, res, body) {
-      expect(res).to.be.ok;
+      expect(res).to.exist();
       expect(res.statusCode).to.equal(200);
-      expect(res.body).to.equal(undefined);
-      expect(body).to.equal(undefined);
+      expect(res.body).to.be.undefined();
+      expect(body).to.be.undefined();
       done();
     });
   });

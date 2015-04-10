@@ -1,10 +1,12 @@
 var Lab = require('lab');
+var Code = require('code');
+var lab = exports.lab = Lab.script();
 
-var describe = Lab.experiment;
-var it = Lab.test;
-var expect = Lab.expect;
-var before = Lab.before;
-var after = Lab.after;
+var expect = Code.expect;
+var describe = lab.experiment;
+var it = lab.test;
+var before = lab.before;
+var after = lab.after;
 var mw = require('dat-middleware');
 var createAppWithMiddleware = require('./fixtures/createAppWithMiddlewares');
 var Request = require('../index');
@@ -22,7 +24,8 @@ describe('methods', function() {
         if (err) { return done(err); }
 
         expect(res.statusCode).to.equal(200);
-        expect(res.body).to.equal(body).to.equal('hey');
+        expect(res.body).to.equal(body)
+        expect(res.body).to.equal('hey');
         done();
       });
     });
@@ -38,7 +41,8 @@ describe('methods', function() {
         if (err) { return done(err); }
 
         expect(res.statusCode).to.equal(200);
-        expect(res.body).to.eql(body).to.eql(resJSON);
+        expect(res.body).to.deep.equal(body);
+        expect(res.body).to.deep.equal(resJSON);
         done();
       });
     });
