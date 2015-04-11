@@ -142,6 +142,7 @@ function createRes (app, opts, cb) {
     }
     body = JSON.parse(JSON.stringify(body));
     res.body = body;
+    res.headers = {};
     cb(null, res, body);
   };
   // }
