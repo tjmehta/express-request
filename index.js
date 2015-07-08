@@ -34,7 +34,7 @@ require('methods').forEach(function (method) {
     opts.method = method.toUpperCase();
     args = [opts, cb].filter(exists);
     var req = createReq(this.app, opts);
-    var res = createRes(this.app, opts, cb, args);
+    var res = createRes(this.app, opts, cb, process.domain);
     if (!req.url) {
       throw new Error('url is required');
     }
@@ -131,9 +131,11 @@ function createRes (app, opts, cb) {
   res.end = function () {
     cb(null, res);
   };
+  var lastDomain = process.domain; // cache domain
   res.json = res.send = function (statusCode, body) {
-    if (sent === true) return;
-    sent = true;
+    if (sent === true) {
+      throw new Error('ExpressRequest: Can\'t set headers after they are sent.');
+    }
     if (typeof statusCode === 'number') {
       res.statusCode = statusCode;
     }
@@ -142,7 +144,24 @@ function createRes (app, opts, cb) {
     }
     body = JSON.parse(JSON.stringify(body));
     res.body = body;
-    cb(null, res, body);
+    if (process.domain && lastDomain !== process.domain) {
+      process.domain.exit();
+    }
+    if (lastDomain) {
+      lastDomain.run(send);
+    }
+    else {
+      send();
+    }
+    // sent=true should be the last line if error w/in res.send (above code)
+    function send () {
+      sent = true;
+      // next tick it to avoid express catching runtime error in the callback
+      //   getting caught by express and triggering app's error handler
+      process.nextTick(function () {
+        cb(null, res, body);
+      });
+    }
   };
   // }
 
