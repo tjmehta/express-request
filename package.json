@@ -30,6 +30,7 @@
     "express": "^4.5.1",
     "lab": "^5.5.1",
     "nodemon": "^1.2.1",
+    "request": "^2.58.0",
     "supertest": "^0.13.0"
   },
   "dependencies": {
