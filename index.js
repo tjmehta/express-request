@@ -34,7 +34,7 @@ require('methods').forEach(function (method) {
     opts.method = method.toUpperCase();
     args = [opts, cb].filter(exists);
     var req = createReq(this.app, opts);
-    var res = createRes(this.app, opts, cb, process.domain);
+    var res = createRes(this.app, opts, cb);
     if (!req.url) {
       throw new Error('url is required');
     }
@@ -129,6 +129,9 @@ function createRes (app, opts, cb) {
   res.write = throwNotSupported('write');
   res.code = throwNotSupported('code');
   res.end = function () {
+    if (sent === true) {
+      throw new Error('ExpressRequest: Can\'t set headers after they are sent.');
+    }
     cb(null, res);
   };
   var lastDomain = process.domain; // cache domain
@@ -163,7 +166,6 @@ function createRes (app, opts, cb) {
       });
     }
   };
-  // }
 
   return res;
 }
