@@ -30,4 +30,22 @@ describe('end', function() {
       done();
     });
   });
+  describe('res.end called twice', function() {
+    var app;
+    beforeEach(function (done) {
+      app = createAppWithMiddleware(
+        function (req, res, next) {
+          res.end();
+          next();
+        },
+        mw.res.end()
+      );
+      done();
+    });
+    it('should not error if res.end called twice', function (done) {
+      var request = new ExpressRequest(app);
+
+      request.get('/hey', done);
+    });
+  });
 });

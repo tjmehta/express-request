@@ -132,7 +132,16 @@ function createRes (app, opts, cb) {
     if (sent === true) {
       throw new Error('ExpressRequest: Can\'t set headers after they are sent.');
     }
-    cb(null, res);
+    setupDomain(end);
+    // sent=true should be the last line if error w/in res.end (above code)
+    function end () {
+      sent = true;
+      // next tick it to avoid express catching runtime error in the callback
+      //   getting caught by express and triggering app's error handler
+      process.nextTick(function () {
+        cb(null, res);
+      });
+    }
   };
   var lastDomain = process.domain; // cache domain
   res.json = res.send = function (statusCode, body) {
@@ -147,15 +156,7 @@ function createRes (app, opts, cb) {
     }
     body = JSON.parse(JSON.stringify(body));
     res.body = body;
-    if (process.domain && lastDomain !== process.domain) {
-      process.domain.exit();
-    }
-    if (lastDomain) {
-      lastDomain.run(send);
-    }
-    else {
-      send();
-    }
+    setupDomain(send);
     // sent=true should be the last line if error w/in res.send (above code)
     function send () {
       sent = true;
@@ -166,6 +167,18 @@ function createRes (app, opts, cb) {
       });
     }
   };
+
+  function setupDomain (cb) {
+    if (process.domain && lastDomain !== process.domain) {
+      process.domain.exit();
+    }
+    if (lastDomain) {
+      lastDomain.run(cb);
+    }
+    else {
+      cb();
+    }
+  }
 
   return res;
 }
