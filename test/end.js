@@ -42,7 +42,7 @@ describe('end', function() {
       );
       done();
     });
-    it('should not error if res.end calledd twice', function (done) {
+    it('should not error if res.end called twice', function (done) {
       var request = new ExpressRequest(app);
 
       request.get('/hey', done);
