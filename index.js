@@ -163,6 +163,7 @@ function createRes (app, opts, cb) {
       // next tick it to avoid express catching runtime error in the callback
       //   getting caught by express and triggering app's error handler
       process.nextTick(function () {
+        res.end(body);
         cb(null, res, body);
       });
     }
