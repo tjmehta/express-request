@@ -7,6 +7,7 @@ var describe = lab.experiment;
 var it = lab.test;
 var beforeEach = lab.beforeEach;
 var mw = require('dat-middleware');
+var noop = require('101/noop');
 var createAppWithMiddleware = require('./fixtures/createAppWithMiddlewares');
 var ExpressRequest = require('../index');
 
@@ -46,6 +47,26 @@ describe('end', function() {
       var request = new ExpressRequest(app);
 
       request.get('/hey', done);
+    });
+  });
+  describe('res.end events', function () {
+    var app, onFinish;
+    beforeEach(function (done) {
+      app = createAppWithMiddleware(
+        function (req, res, next) {
+          res.on('finish', onFinish);
+          next();
+        },
+        mw.res.end()
+      );
+      done();
+    });
+    it('should emit finish', function (done) {
+      var request = new ExpressRequest(app);
+
+      onFinish = done;
+
+      request.get('/hey', noop);
     });
   });
 });
