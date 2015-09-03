@@ -139,6 +139,7 @@ function createRes (app, opts, cb) {
       // next tick it to avoid express catching runtime error in the callback
       //   getting caught by express and triggering app's error handler
       process.nextTick(function () {
+        res.emit('finish');
         cb(null, res);
       });
     }
@@ -163,6 +164,7 @@ function createRes (app, opts, cb) {
       // next tick it to avoid express catching runtime error in the callback
       //   getting caught by express and triggering app's error handler
       process.nextTick(function () {
+        res.emit('finish');
         cb(null, res, body);
       });
     }
